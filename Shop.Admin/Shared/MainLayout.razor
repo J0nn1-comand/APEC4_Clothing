@@ -1,0 +1,68 @@
+﻿@inherits LayoutComponentBase
+@using Shop.Admin.Services;
+@inject IAdminPanelService adminPanelService
+@inject ProtectedSessionStorage sessionStorage;
+@inject NavigationManager navManager;
+
+@if (IsAdminLoggedIn)
+{
+    <div class="sidebar">
+        <NavMenu />
+    </div>
+}
+
+
+<div class="main">
+    @if (IsAdminLoggedIn)
+    {
+        <div class="top-row px-4">
+            <a href="#" @onclick="Logout">Logout</a>
+        </div>
+    }
+    
+    <div class="content px-4">
+        <CascadingValue Value=event_notify>
+            @Body
+        </CascadingValue>
+    </div>
+</div>
+
+@code{
+
+    public bool IsAdminLoggedIn = false;
+    EventCallback event_notify => EventCallback.Factory.Create(this, NotifyLayout);
+
+    protected override Task OnInitializedAsync()
+    {
+        return base.OnInitializedAsync();
+    }
+
+    private async Task NotifyLayout()
+    {
+        var adminSession = await sessionStorage.GetAsync<string>("adminKey");
+        if (adminSession.Success)
+        {
+            IsAdminLoggedIn = true;
+        }
+        else
+        {
+            IsAdminLoggedIn = false;
+            navManager.NavigateTo("/login");
+        }
+    }
+
+    private async void Logout()
+    {
+        await sessionStorage.DeleteAsync("admin");
+        await NotifyLayout();
+        navManager.NavigateTo("/login");
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await NotifyLayout();
+        }
+    }
+}

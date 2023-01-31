@@ -1,0 +1,75 @@
+﻿@page "/"
+@using Shop.Admin.Services;
+@inject IAdminPanelService adminPanelService
+@inject ProtectedSessionStorage sessionStorage;
+@inject NavigationManager navManager;
+
+@if (IsAdminLoggedIn)
+{
+    <h1>Hello! Welcome to Admin Panel</h1>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card card-inverse card-warning p-1">
+                    <div class="card-block bg-warning p-2">
+                        <h6 class="text-uppercase">Products</h6>
+                        <h1 class="display-1">12</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card card-inverse card-warning p-1">
+                    <div class="card-block bg-info p-2">
+                        <h6 class="text-uppercase">Category</h6>
+                        <h1 class="display-1">9</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card card-inverse card-warning p-1">
+                    <div class="card-block bg-primary p-2">
+                        <h6 class="text-uppercase">Manage Customers</h6>
+                        <h1 class="display-1">10</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card card-inverse card-warning p-1">
+                    <div class="card-block bg-secondary p-2">
+                        <h6 class="text-uppercase"> Stock</h6>
+                        <h1 class="display-1">7</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+@code{
+
+    [CascadingParameter]
+    public EventCallback notify { get; set; }
+    public bool IsAdminLoggedIn = false;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await notify.InvokeAsync();
+
+            var adminSession = await sessionStorage.GetAsync<string>("adminKey");
+            if (adminSession.Success)
+            {
+                IsAdminLoggedIn = true;
+                StateHasChanged();
+            }
+            else
+            {
+                navManager.NavigateTo("/login");
+            }
+        }
+    }
+}

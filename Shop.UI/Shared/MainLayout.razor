@@ -1,0 +1,594 @@
+﻿@inherits LayoutComponentBase
+
+<style>
+    body {
+        margin: 0;
+        font-family: 'Roboto Condensed', sans-serif;
+        background: #fff;
+    }
+
+        body a {
+            -webkit-transition: 0.5s all;
+            -moz-transition: 0.5s all;
+            -o-transition: 0.5s all;
+            -ms-transition: 0.5s all;
+            transition: 0.5s all;
+            text-decoration: none;
+        }
+
+    h1, h2, h3, h4, h5, h6 {
+        margin: 0;
+    }
+
+    p {
+        margin: 0;
+    }
+
+    ul, label {
+        margin: 0;
+        padding: 0;
+    }
+
+    body a:hover {
+        text-decoration: none;
+    }
+
+    .w3ls-header {
+        background: #464646;
+        padding: 0.5em 2em;
+    }
+
+    .w3ls-header-left {
+        float: left;
+    }
+
+    .w3ls-header-right {
+        float: right;
+    }
+
+    .w3ls-header-left p {
+        font-size: 0.9em;
+    }
+
+        .w3ls-header-left p a {
+            color: #fff;
+        }
+
+    .w3ls-header-right ul li.dropdown {
+        display: inline-block;
+        padding: 0 1em;
+    }
+
+    ul.dropdown-menu {
+        -moz-animation: fadeInUp .2s ease-in;
+        -webkit-animation: fadeInUp .2s ease-in;
+        animation: fadeInUp .2s ease-in;
+        min-width: 120px;
+        font-size: 1em;
+        top: 125%;
+        z-index: 99999;
+    }
+
+    ul.cd-dropdown-content li {
+        display: block;
+    }
+
+    .w3ls-header-right ul li a.dropdown-toggle {
+        font-size: 0.9em;
+        color: #f9f9f9;
+        outline: none;
+    }
+
+        .w3ls-header-right ul li a.dropdown-toggle:hover, li.dropdown.head-dpdn.open a.dropdown-toggle, .my-account a:hover, .my-account a:hover i.fa {
+            color: #fd776d;
+            text-decoration: none;
+        }
+
+    .w3ls-header-right ul li a i.fa {
+        margin-right: 5px;
+    }
+
+    .w3ls-header-right ul li .caret {
+        margin-left: 6px;
+    }
+
+    .dropdown-menu > li > a {
+        color: #999;
+    }
+
+        .dropdown-menu > li > a:hover {
+            color: #fff;
+            background: #3988d1;
+        }
+
+
+    .header-two {
+        padding: 0em 0;
+        position: relative;
+    }
+
+    .header-logo {
+        float: left;
+    }
+
+    .header-search {
+        float: left;
+        width: 55%;
+        text-align: center;
+        margin: 1.6em 5em;
+    }
+
+    .header-cart {
+        float: right;
+        margin: 1.3em 0 0 0;
+    }
+
+    .header-logo h1, .footer-logo.header-logo h2 {
+        font-size: 3em;
+        font-weight: 900;
+    }
+
+        .header-logo h1 a, .footer-logo.header-logo h2 a {
+            display: inline-block;
+            color: #000;
+            text-decoration: none;
+            position: relative;
+        }
+
+            .header-logo h1 a span, .footer-logo.header-logo h2 a span {
+                font-family: 'Lovers Quarrel', cursive;
+                font-size: 2em;
+                color: #F44336;
+                vertical-align: sub;
+                margin-right: 3px;
+            }
+
+            .header-logo h1 a i, .footer-logo.header-logo h2 a i {
+                display: block;
+                position: absolute;
+                bottom: 18%;
+                right: 2%;
+                font-size: 0.5em;
+            }
+
+    .header-logo h6 {
+        font-size: 0.8em;
+        color: #000;
+        letter-spacing: 1px;
+        margin-top: -1em;
+    }
+
+    .header-search form {
+        position: relative;
+    }
+
+    .header-search input[type="search"] {
+        width: 100%;
+        padding: 1em 5em 1em 1em;
+        font-size: 1em;
+        color: #999;
+        outline: none;
+        border: 1px solid #cccccc;
+        background: none;
+        -webkit-appearance: none;
+        transition: 0.5s all;
+        -webkit-transition: 0.5s all;
+        -moz-transition: 0.5s all;
+    }
+
+        .header-search input[type="search"]:focus {
+            border-color: #f44336;
+        }
+
+    .header-search .btn-default {
+        border: none;
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        width: 60px;
+        height: 50px;
+        outline: none;
+        box-shadow: none;
+        background: #f44336;
+        padding: 0;
+        border-radius: inherit;
+        -webkit-appearance: none;
+        -webkit-transition: .5s all;
+        -moz-transition: .5s all;
+        transition: .5s all;
+    }
+
+    .header-search i.fa {
+        font-size: 1em;
+        color: #fff;
+        padding: 3px;
+    }
+
+    .header-cart h4 a {
+        color: #000;
+    }
+    /*-- cart-box --*/
+    .cart {
+        margin-right: 2em;
+        padding-right: 2em;
+        border-right: 1px solid #6495ed;
+        float: left;
+    }
+
+    .w3view-cart {
+        background: #0280e1;
+        border: none;
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        -o-border-radius: 50%;
+        -ms-border-radius: 50%;
+        border-radius: 50%;
+        width: 60px;
+        height: 59px;
+        text-align: center;
+        outline: none;
+    }
+
+        .w3view-cart i.fa {
+            font-size: 2em;
+            color: #ffffff;
+            vertical-align: middle;
+        }
+    /*-- //cart-box --*/
+    .my-account {
+        float: right;
+        margin: 1.4em 0;
+    }
+
+        .my-account a {
+            font-size: 1em;
+            color: #000;
+            -webkit-transition: 0.5s all;
+            -moz-transition: 0.5s all;
+            -o-transition: 0.5s all;
+            -ms-transition: 0.5s all;
+            transition: 0.5s all;
+        }
+
+            .my-account a i.fa {
+                color: #cccccc;
+                margin-right: 3px;
+                -webkit-transition: 0.5s all;
+                -moz-transition: 0.5s all;
+                -o-transition: 0.5s all;
+                -ms-transition: 0.5s all;
+                transition: 0.5s all;
+            }
+    /*-- //header-two --*/
+
+
+    /*-- welcome --*/
+    .welcome, .deals, .card-page, .help, .values, .privacy, .sitemap, .products, .related-products, .login-page, .contact, .about, .faq-w3agile, .wthree-offers, .w3l-services {
+        padding: 1em 0;
+    }
+
+    h3.w3ls-title {
+        text-align: left;
+        font-size: 2em;
+        color: #000;
+        margin: 1em 0;
+        font-family: 'Offside', cursive;
+    }
+
+    .welcome-grids {
+        float: left;
+        width: 33.33%;
+        text-align: center;
+        margin: 0.7em 0;
+    }
+
+    .welcome-info {
+        text-align: center;
+    }
+
+    .welcome .bs-example.bs-example-tabs .nav-tabs {
+        border: none;
+        margin: 2em 0 1em;
+    }
+
+    .welcome .bs-example-tabs ul.nav-tabs li {
+        display: inline-block;
+        float: none;
+        margin: 0 3em;
+    }
+
+        .welcome .bs-example-tabs ul.nav-tabs li a {
+            display: block;
+            outline: none;
+            border: none;
+            margin: 0;
+        }
+
+            .welcome .bs-example-tabs ul.nav-tabs li a:focus {
+                text-decoration: none;
+            }
+
+    .welcome .tabcontent-grids ul li {
+        display: block;
+        color: #999;
+        margin-top: 1em;
+        font-size: 1em;
+    }
+
+    .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+        background-color: transparent;
+    }
+
+    .nav-tabs li a i.fa {
+        font-size: 5em;
+        color: #78d378;
+        -webkit-transition: .5s all;
+        -moz-transition: .5s all;
+        -o-transition: .5s all;
+        -ms-transition: .5s all;
+        transition: .5s all;
+    }
+
+        .nav-tabs li a i.fa.fa-female {
+            color: #f57df5;
+        }
+
+        .nav-tabs li a i.fa.fa-gift {
+            color: #fd723e;
+        }
+
+        .nav-tabs li a i.fa.fa-home {
+            color: #5b91f2;
+        }
+
+        .nav-tabs li a i.fa.fa-motorcycle {
+            color: #ec4b81;
+        }
+
+    .nav-tabs li a h5 {
+        font-size: 1.2em;
+        color: #555;
+        margin-top: 1em;
+        -webkit-transition: .5s all;
+        -moz-transition: .5s all;
+        -o-transition: .5s all;
+        -ms-transition: .5s all;
+        transition: .5s all;
+    }
+
+    .welcome ul.nav-tabs li.active a i.fa, .welcome ul.nav-tabs li:hover a i.fa {
+        color: #d2d2d2;
+    }
+
+    .welcome ul.nav-tabs li.active a h5, .welcome ul.nav-tabs li:hover a h5 {
+        color: #d2d2d2;
+    }
+
+
+    h3.w3ls-title {
+        text-align: left;
+        font-size: 2em;
+        color: #000;
+        margin: 1em 0;
+        font-family: 'Offside', cursive;
+    }
+
+    .welcome-grids {
+        float: left;
+        width: 33.33%;
+        text-align: center;
+        margin: 0.7em 0;
+    }
+
+    .welcome-info {
+        text-align: center;
+    }
+
+    .welcome .bs-example.bs-example-tabs .nav-tabs {
+        border: none;
+        margin: 2em 0 1em;
+    }
+
+    .welcome .bs-example-tabs ul.nav-tabs li {
+        display: inline-block;
+        float: none;
+        margin: 0 3em;
+    }
+
+        .welcome .bs-example-tabs ul.nav-tabs li a {
+            display: block;
+            outline: none;
+            border: none;
+            margin: 0;
+        }
+
+            .welcome .bs-example-tabs ul.nav-tabs li a:focus {
+                text-decoration: none;
+            }
+
+    .welcome .tabcontent-grids ul li {
+        display: block;
+        color: #999;
+        margin-top: 1em;
+        font-size: 1em;
+    }
+
+
+    .w3view-cart {
+        background: #0280e1;
+        border: none;
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        -o-border-radius: 50%;
+        -ms-border-radius: 50%;
+        border-radius: 50%;
+        width: 60px;
+        height: 59px;
+        text-align: center;
+        outline: none;
+    }
+
+        .w3view-cart i.fa {
+            font-size: 2em;
+            color: #ffffff;
+            vertical-align: middle;
+        }
+</style>
+
+<style>
+
+    * {
+        box-sizing: border-box;
+    }
+    .header {
+        background-color: #94e6f8;
+        color: white;
+        padding: 15px;
+    }
+
+    .footer {
+        background-color: grey;
+        color: white;
+        padding: 15px;
+    }
+
+    .column {
+        float: left;
+        padding: 15px;
+        padding-top: 0px;
+    }
+
+    .menu {
+        width: 25%;
+    }
+
+    .content {
+        width: 75%;
+    }
+
+    .menu ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .menu li {
+        padding: 8px;
+        margin-bottom: 8px;
+        background-color: #33b5e5;
+        color: #ffffff;
+    }
+
+        .menu li:hover {
+            background-color: #fd776d;
+        }
+</style>
+
+<div class="header">
+    <div class="w3ls-header">
+        <!--header-one-->
+        <div class="w3ls-header-left">
+            <p><a href="#"> USE COUPON CODE LAPPY </a></p>
+        </div>
+        <div class="w3ls-header-right">
+            <ul>
+                <li class="dropdown head-dpdn">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user" aria-hidden="true"></i> My Account<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="login.html">Login </a></li>
+                        <li><a href="signup.html">Sign Up</a></li>
+                        <li><a href="login.html">My Orders</a></li>
+                        <li><a href="login.html">Wallet</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown head-dpdn">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-percent" aria-hidden="true"></i> Today's Deals<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="offers.html">Cash Back Offers</a></li>
+                        <li><a href="offers.html">Product Discounts</a></li>
+                        <li><a href="offers.html">Special Offers</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown head-dpdn">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-gift" aria-hidden="true"></i> Gift Cards<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="offers.html">Product Gift card</a></li>
+                        <li><a href="offers.html">Occasions Register</a></li>
+                        <li><a href="offers.html">View Balance</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown head-dpdn">
+                    <a href="contact.html" class="dropdown-toggle"><i class="fa fa-map-marker" aria-hidden="true"></i> Store Finder</a>
+                </li>
+                <li class="dropdown head-dpdn">
+                    <a href="card.html" class="dropdown-toggle"><i class="fa fa-credit-card-alt" aria-hidden="true"></i> Credit Card</a>
+                </li>
+                <li class="dropdown head-dpdn">
+                    <a href="help.html" class="dropdown-toggle"><i class="fa fa-question-circle" aria-hidden="true"></i> Help</a>
+                </li>
+            </ul>
+        </div>
+        <div class="clearfix"> </div>
+    </div>
+    <div class="header-two">
+       
+        <div class="container">
+            <div class="header-logo">
+                <h1><a href="index.html"><span>D</span>mart</a></h1>
+
+            </div>
+            <div class="header-search">
+                <form style="background-color:#fff;color:black;">
+                    <input type="search" name="Search" placeholder="Search for a Product..." required="">
+                    <button type="submit" class="btn btn-default" aria-label="Left Align">
+                        <i class="fa fa-search" aria-hidden="true"> </i>
+                    </button>
+                </form>
+            </div>
+            <div class="header-cart">
+                <button class="w3view-cart" type="submit" name="submit" value=""><i class="fa fa-cart-arrow-down" aria-hidden="true"></i></button>
+
+                <div class="clearfix"> </div>
+            </div>
+            <div class="clearfix"> </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="welcome" style="border:1px ridge #F44336">
+    <div class="container">
+        <div class="welcome-info">
+
+            <div class="clearfix">
+                <div class="column menu">
+                    <ul>
+                        <li>The Flight</li>
+                        <li>The City</li>
+                        <li>The Island</li>
+                        <li>The Food</li>
+                        <li>The Flight</li>
+                        <li>The City</li>
+                        <li>The Island</li>
+                        <li>The Food</li>
+                    </ul>
+                </div>
+                <div class="column content">
+                    @Body
+                </div>
+            </div>
+
+            <div class="footer">
+                <p>&copy; Dmart 2021</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+

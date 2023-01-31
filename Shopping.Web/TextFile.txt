@@ -1,0 +1,13 @@
+﻿// Set   
+//await sessionStorage.SetAsync("userKey", "Hello, World!");
+// Get  
+//var greeting = await sessionStorage.GetAsync<string>("greeting");
+
+
+//await sessionStorage.SetAsync("UK", "Hello, World!");
+//var result = await sessionStorage.GetAsync<string>("UK");
+//string ss = result.Success ? result.Value : "Nothing";
+
+
+     //await sessionStorage.SetAsync("UK", "Hello, World!");
+     //string ss = result.Success ? result.Value : "Nothing";

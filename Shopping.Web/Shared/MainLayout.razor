@@ -1,0 +1,228 @@
+﻿@inherits LayoutComponentBase
+@using Shop.DataModels.CustomModels;
+@using Shop.Web.Services;
+@inject IUserPanelService userPanelService
+@inject ProtectedSessionStorage sessionStorage;
+@inject NavigationManager navManager;
+@inject IJSRuntime JSRuntime
+
+<style>
+    .mainlayout {
+        max-width: 900px;
+        margin: auto;
+        background: white;
+        padding: 10px;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    .header {
+        color: black;
+        padding: 5px;
+        border: 1px groove #808080;
+        border-radius: 14px;
+        background: #4D13B2;
+        background-size: 400% 400%;
+    }
+
+    .footer {
+        color: black;
+        padding: 5px;
+        border: 1px groove #808080;
+        border-radius: 7px;
+        background: #4D13B2;
+        background-size: 400% 400%;
+    }
+</style>
+
+<style>
+    .col-container {
+        display: table;
+        width: 100%;
+        border-radius: 25px;
+    }
+
+    .col {
+        display: table-cell;
+        padding: 16px;
+    }
+
+    .divleft {
+        float: left;
+    }
+
+    .divright {
+        float: right;
+    }
+</style>
+
+<div class="mainlayout">
+    <div style="padding-bottom:25px;">
+        <div class="divleft" style="padding-right: 15px;">
+            <NavLink href="/">
+                Home
+            </NavLink>
+        </div>
+        <div class="divleft">
+            @if (IsUserLoggedIn)
+            {
+                <i class="fa fa-user"></i><span>Welcome, @LoggedInUserName</span>
+            }
+            else
+            {
+                <i class="fa fa-user"></i><span>Welcome,</span>
+            }
+        </div>
+        <div class="divright">
+            @if (IsUserLoggedIn)
+            {
+                <div style="padding-left:15px;">
+                    <i class="fa fa-sign-out"></i> <a @onclick="@Logout" href="#">Logout</a>
+                </div>
+            }
+        </div>
+        <div class="divright" style="padding-left:15px;">
+            @if (IsUserLoggedIn)
+            {
+                <NavLink href="myaccount">
+                    MyAccount
+                </NavLink>
+            }
+        </div>
+        <div class="divright" style="padding-left:15px;">
+            @if (!IsUserLoggedIn)
+            {
+                <NavLink href="login">
+                    Login
+                </NavLink>
+            }
+        </div>
+        <div class="divright" style="padding-left:15px;">
+            @if (!IsUserLoggedIn)
+            {
+                <NavLink href="register">
+                    Register
+                </NavLink>
+            }
+        </div>
+    </div>
+    <div class="header">
+        <div class="col-container">
+            <div class="col" style="border-radius: 25px;">
+                <NavLink href="/">
+                    <img src="images/shoppingLogo.png" style="cursor:pointer;" />
+                </NavLink>
+            </div>
+            <div class="col">
+                @if (cartCount > 0)
+                {
+                    <a href="/mycart">
+                        <i class="fa fa-shopping-cart" style="font-size:48px;color:black">
+                            <span style="font-size:35px;vertical-align:top;padding:7px;color:black;border-radius:50%;padding-top:10px;font-weight:bold;"><sup>@cartCount</sup></span>
+                        </i>
+                    </a>
+                }
+                else
+                {
+                    <a href="/mycart">
+                        <i class="fa fa-shopping-cart" style="font-size:48px;color:white">
+                            <span style="font-size:35px;vertical-align:top;padding:7px;color:white;border-radius:50%;padding-top:10px;font-weight:bold;"><sup>@cartCount</sup></span>
+                        </i>
+                    </a>
+                }
+
+            </div>
+        </div>
+    </div>
+
+    <div class="clearfix">
+        <CascadingValue Value=event_notify>
+            @Body
+        </CascadingValue>
+    </div>
+
+    <div class="footer">
+        &copy; Apec4Clothing 2023
+    </div>
+</div>
+
+
+@code{
+
+    public List<CartModel> myCart { get; set; }
+    public List<CartModel> myCartClone { get; set; }
+    public int cartCount = 0;
+    public int oldCartCount = 0;
+    public bool IsUserLoggedIn = false;
+    public string LoggedInUserName = "User";
+    public int layoutState = 0;
+
+    EventCallback event_notify => EventCallback.Factory.Create(this, NotifyLayout);
+
+    protected override Task OnInitializedAsync()
+    {
+        return base.OnInitializedAsync();
+    }
+
+    private async Task NotifyLayout()
+    {
+        IsUserLoggedIn = await userPanelService.IsUserLoggedIn();
+
+        if (IsUserLoggedIn && layoutState == 0)
+        {
+            var userNameSession = await sessionStorage.GetAsync<string>("userName");
+            LoggedInUserName = userNameSession.Value;
+
+            var checkoutSession = await sessionStorage.GetAsync<string>("checkoutAlert");
+            if (checkoutSession.Success)
+            {
+                await sessionStorage.DeleteAsync("checkoutAlert");
+                navManager.NavigateTo("/mycart");
+            }
+
+            StateHasChanged();
+            layoutState++;
+        }
+
+        if (layoutState == -1)
+        {
+            StateHasChanged();
+        }
+
+        var result = await sessionStorage.GetAsync<List<CartModel>>("myCart");
+
+        if (result.Success)
+        {
+            myCart = result.Value;
+            cartCount = myCart.Count;
+            await sessionStorage.DeleteAsync("updateCartFlag");
+            StateHasChanged();
+        }
+        else
+        {
+            cartCount = 0;
+        }
+    }
+
+    private async void Logout()
+    {
+        await sessionStorage.DeleteAsync("userKey");
+        await sessionStorage.DeleteAsync("userName");
+        await sessionStorage.DeleteAsync("userEmail");
+        await NotifyLayout();
+        navManager.NavigateTo("/");
+        layoutState = -1;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await NotifyLayout();
+        }
+    }
+}
+
+
