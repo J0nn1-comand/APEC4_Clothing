@@ -265,7 +265,7 @@
         Name = "CashOnDelivery" // default value
     };
 
-    List<string> rdOptions = new List<string> { "CashOnDelivery", "PayPal", "Stripe"};
+    List<string> rdOptions = new List<string> { "CashOnDelivery", "PayPal", "Credit Card"};
 
     protected override Task OnInitializedAsync()
     {
@@ -305,7 +305,7 @@
                 myCart.FirstOrDefault().PayPalPayment = finalTotal;
                 myCart.FirstOrDefault().PaymentMode = paymentModel.Name;
             }
-            if (paymentModel.Name == "Stripe")
+            if (paymentModel.Name == "Credit Card")
             {
                 myCart.FirstOrDefault().Stripecard_Number = Stripecard_Number;
                 myCart.FirstOrDefault().Stripeexp_Month = Stripeexp_Month;
